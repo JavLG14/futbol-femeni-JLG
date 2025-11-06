@@ -54,6 +54,8 @@ php artisan serve
 - Validació de formularis i dades en sessió (`SESSION_DRIVER=file`).
 
 ---
+[Preguntes de reflexió](Preguntes%20reflexió.pdf)
+---
 
 ## 👩‍💻 Autor
 
