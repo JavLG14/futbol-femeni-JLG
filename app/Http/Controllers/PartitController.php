@@ -28,6 +28,14 @@ class PartitController extends Controller
         return view('partits.index', compact('partits'));
     }
 
+    public function show(int $id)
+    {
+        $partits = Session::get('partits', $this->partits);
+        abort_if(!isset($partits[$id]), 404);
+        $partit = $partits[$id];
+        return view('partits.show', compact('partit'));
+    }
+
     public function create()
     {
         return view('partits.create');

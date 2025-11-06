@@ -19,6 +19,14 @@ class JugadoraController extends Controller
         return view('jugadores.index', compact('jugadores'));
     }
 
+    public function show(int $id)
+    {
+        $jugadores = Session::get('jugadores', $this->jugadores);
+        abort_if(!isset($jugadores[$id]), 404);
+        $jugadora = $jugadores[$id];
+        return view('jugadores.show', compact('jugadora'));
+    }
+
     public function create()
     {
         return view('jugadores.create');

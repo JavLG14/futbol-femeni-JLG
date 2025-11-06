@@ -16,7 +16,9 @@ Route::resource('estadis', EstadiController::class);
 Route::get('/jugadores', [JugadoraController::class, 'index'])->name('jugadores.index');
 Route::get('/jugadores/crear', [JugadoraController::class, 'create'])->name('jugadores.create');
 Route::post('/jugadores', [JugadoraController::class, 'store'])->name('jugadores.store');
+Route::get('/jugadores/{id}', [JugadoraController::class, 'show'])->name('jugadores.show');
 
 Route::get('/partits', [PartitController::class, 'index'])->name('partits.index');
 Route::get('/partits/crear', [PartitController::class, 'create'])->name('partits.create');
 Route::post('/partits', [PartitController::class, 'store'])->name('partits.store');
+Route::get('/partits/{id}', [PartitController::class, 'show'])->name('partits.show');

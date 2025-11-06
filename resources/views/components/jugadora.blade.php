@@ -1,5 +1,7 @@
-<tr class="hover:bg-gray-100">
-  <td class="border border-gray-300 p-2 font-semibold">{{ $nom }}</td>
-  <td class="border border-gray-300 p-2">{{ $equip }}</td>
-  <td class="border border-gray-300 p-2">{{ $posicio }}</td>
-</tr>
+<div class="estadi border rounded-lg shadow-md p-4 bg-white">
+  <h2 class="text-xl font-bold text-blue-800">{{ $nom }}</h2>
+  <p><strong>Equip:</strong> {{ $equip }}</p>
+  <p><strong>Posició:</strong> {{ $posicio }}</p>
+
+  <a href="{{ route('jugadores.index') }}" class="inline-block mt-4 text-blue-600 hover:underline">← Tornar</a>
+</div>

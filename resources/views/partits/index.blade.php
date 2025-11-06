@@ -22,10 +22,12 @@
     </tr>
   </thead>
   <tbody>
-    @foreach($partits as $partit)
+    @foreach($partits as $key => $partit)
       <tr class="hover:bg-gray-100">
-        <td class="border border-gray-300 p-2"><x-equip-mini :nom="$partit['local']"/></td>
-        <td class="border border-gray-300 p-2"><x-equip-mini :nom="$partit['visitant']"/></td>
+        <td class="border border-gray-300 p-2">
+            <a href="{{ route('partits.show', $key) }}" class="text-blue-700 hover:underline">{{ $partit['local'] }}</a>
+        </td>
+        <td class="border border-gray-300 p-2">{{ $partit['visitant'] }}</td>
         <td class="border border-gray-300 p-2">{{ $partit['data'] }}</td>
         <td class="border border-gray-300 p-2">{{ $partit['resultat'] ?: '-' }}</td>
       </tr>
