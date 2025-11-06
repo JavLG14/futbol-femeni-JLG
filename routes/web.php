@@ -5,8 +5,9 @@ use App\Http\Controllers\EquipController;
 use App\Http\Controllers\EstadiController;
 use App\Http\Controllers\JugadoraController;
 use App\Http\Controllers\PartitController;
+use App\Http\Controllers\IniciController;
 
-Route::get('/', fn() => "Benvingut a la Guia d'Equips de Futbol Femení!");
+Route::get('/', [IniciController::class, 'index'])->name('inici.inici');
 
 Route::resource('equips', EquipController::class);
 
