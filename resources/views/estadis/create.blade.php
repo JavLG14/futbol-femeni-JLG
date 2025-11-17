@@ -14,27 +14,14 @@
 
 <form action="{{ route('estadis.store') }}" method="POST" class="space-y-4">
   @csrf
-
   <div>
     <label for="nom" class="block font-bold">Nom:</label>
     <input type="text" name="nom" id="nom" value="{{ old('nom') }}" class="border p-2 w-full">
   </div>
-
   <div>
-    <label for="localitat" class="block font-bold">Localitat:</label>
-    <input type="text" name="localitat" id="localitat" value="{{ old('localitat') }}" class="border p-2 w-full">
+    <label for="capacitat" class="block font-bold">Capacitat:</label>
+    <input type="text" name="capacitat" id="capacitat" value="{{ old('capacitat') }}" class="border p-2 w-full">
   </div>
-
-  <div>
-    <label for="aforament" class="block font-bold">Aforament:</label>
-    <input type="number" name="aforament" id="aforament" value="{{ old('aforament') }}" class="border p-2 w-full">
-  </div>
-
-  <div>
-    <label for="equip" class="block font-bold">Equip:</label>
-    <input type="text" name="equip" id="equip" value="{{ old('equip') }}" class="border p-2 w-full">
-  </div>
-
   <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Afegir</button>
 </form>
 @endsection

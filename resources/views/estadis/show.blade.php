@@ -2,10 +2,5 @@
 @section('title', "Detall d'Estadi")
 
 @section('content')
-<x-estadi 
-  :nom="$estadi['nom']" 
-  :localitat="$estadi['localitat']" 
-  :aforament="$estadi['aforament']" 
-  :equip="$estadi['equip']" 
-/>
+<x-estadi :nom="$estadi->nom"   :capacitat="$estadi->capacitat" :equips="$estadi->Equips"/>
 @endsection
