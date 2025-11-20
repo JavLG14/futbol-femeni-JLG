@@ -1,40 +1,51 @@
 @extends('layouts.app')
-@section('title', 'Afegir nova jugadora')
+@section('title', "Afegir jugadora")
 
 @section('content')
-<h1 class="text-2xl font-bold mb-4">Afegir nova jugadora</h1>
+<h1 class="text-3xl font-bold text-blue-800 mb-6">Afegir jugadora</h1>
 
 @if ($errors->any())
-  <div class="bg-red-100 text-red-700 p-2 mb-4">
-    <ul>
-      @foreach ($errors->all() as $error) <li>{{ $error }}</li> @endforeach
-    </ul>
-  </div>
+    <div class="bg-red-100 text-red-700 p-2 mb-4">
+        <ul class="list-disc list-inside">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
 @endif
 
-<form action="{{ route('jugadores.store') }}" method="POST" class="space-y-4">
-  @csrf
-  <div>
-    <label for="nom" class="block font-bold">Nom:</label>
-    <input type="text" name="nom" id="nom" value="{{ old('nom') }}" class="border p-2 w-full">
-  </div>
+<form action="{{ route('jugadores.store') }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded shadow-md">
+    @csrf
+    <div class="mb-4">
+        <label for="nom" class="block font-semibold mb-1">Nom</label>
+        <input type="text" name="nom" id="nom" value="{{ old('nom') }}" class="w-full border px-3 py-2 rounded" required>
+    </div>
 
-  <div>
-    <label for="equip" class="block font-bold">Equip:</label>
-    <input type="text" name="equip" id="equip" value="{{ old('equip') }}" class="border p-2 w-full">
-  </div>
+    <div class="mb-4">
+        <label for="equip_id" class="block font-semibold mb-1">Equip</label>
+        <select name="equip_id" id="equip_id" class="w-full border px-3 py-2 rounded" required>
+            <option value="">Selecciona un equip</option>
+            @foreach($equips as $equip)
+                <option value="{{ $equip->id }}" {{ old('equip_id') == $equip->id ? 'selected' : '' }}>{{ $equip->nom }}</option>
+            @endforeach
+        </select>
+    </div>
 
-  <div>
-    <label for="posicio" class="block font-bold">Posició:</label>
-    <select name="posicio" id="posicio" class="border p-2 w-full">
-      <option value="">-- Selecciona una posició --</option>
-      <option value="Portera" {{ old('posicio') == 'Portera' ? 'selected' : '' }}>Portera</option>
-      <option value="Defensa" {{ old('posicio') == 'Defensa' ? 'selected' : '' }}>Defensa</option>
-      <option value="Migcampista" {{ old('posicio') == 'Migcampista' ? 'selected' : '' }}>Migcampista</option>
-      <option value="Davantera" {{ old('posicio') == 'Davantera' ? 'selected' : '' }}>Davantera</option>
-    </select>
-  </div>
+    <div class="mb-4">
+        <label for="data_naixement" class="block font-semibold mb-1">Data Naixement</label>
+        <input type="date" name="data_naixement" id="data_naixement" value="{{ old('data_naixement') }}" class="w-full border px-3 py-2 rounded" required>
+    </div>
 
-  <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Afegir</button>
+    <div class="mb-4">
+        <label for="dorsal" class="block font-semibold mb-1">Dorsal</label>
+        <input type="number" name="dorsal" id="dorsal" value="{{ old('dorsal') }}" min="0" class="w-full border px-3 py-2 rounded" required>
+    </div>
+
+    <div class="mb-4">
+        <label for="foto" class="block font-semibold mb-1">Foto (.png, opcional)</label>
+        <input type="file" name="foto" id="foto" accept=".png" class="w-full border px-3 py-2 rounded">
+    </div>
+
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Guardar</button>
 </form>
 @endsection

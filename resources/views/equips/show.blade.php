@@ -2,5 +2,12 @@
 @section('title', "Detall d'Equip")
 
 @section('content')
-<x-equip :nom="$equip->nom" :estadi="$equip->estadi->nom" :titols="$equip->titols"/>
+<x-equip 
+        :nom="$equip->nom" 
+        :estadi="$equip->estadi->nom" 
+        :titols="$equip->titols"
+        :jugadoras="$equip->jugadores"
+        :edatMitjana="$edatMitjana ?? null"
+        :ultimsPartits="$ultimsPartits ?? collect([])"
+ />
 @endsection

@@ -14,21 +14,6 @@ class EquipsSeeder extends Seeder
      */
     public function run(): void
     {
-        $estadi = Estadi::where('nom', 'Camp Nou')->first();
-        $estadi->equips()->create([
-            'nom' => 'Barça Femení',
-            'titols' => 30,
-        ]);
-        $estadi = Estadi::where('nom', 'Wanda Metropolitano')->first();
-        $estadi->equips()->create([
-            'nom' => 'Atlètic de Madrid',
-            'titols' => 10,
-        ]);
-        $estadi = Estadi::where('nom', 'Santiago Bernabéu')->first();
-        $estadi->equips()->create([
-            'nom' => 'Real Madrid Femení',
-            'titols' => 5,
-        ]);
-        Equip::factory()->count(10)->create();
+        Equip::factory()->count(18)->create();
     }
 }

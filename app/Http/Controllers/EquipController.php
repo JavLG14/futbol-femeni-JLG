@@ -30,7 +30,14 @@ class EquipController extends Controller {
 
     // GET /equips/{id}
     public function show(Equip $equip) {
-        return view('equips.show', compact('equip'));
+        // Obtener el equipo completo desde el service (por si hay carga adicional)
+        $equip = $this->servei->trobar($equip->id);
+
+        // Calcular edad media de las jugadoras y los últimos 5 partidos jugados
+        $edatMitjana = $this->servei->edatMitjana($equip->id);
+        $ultimsPartits = $this->servei->ultimsPartits($equip->id, 5);
+
+        return view('equips.show', compact('equip', 'edatMitjana', 'ultimsPartits'));
     }
 
     // GET /equips/{id}/edit
@@ -40,7 +47,7 @@ class EquipController extends Controller {
 
     // PUT /equips/{id}/edit
     public function update(Request $request, Equip $equip) {
-        $this->servei->actualitzar($equip, $request->validated());
+        $this->servei->actualitzar($equip->id, $request->validated());
         return redirect()->route('equips.index')->with('ok', 'Equip actualitzat');
     }
 

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('jugadores', function (Blueprint $table) {
             $table->id();
+            $table->string('nom');
             $table->foreignId('equip_id')->constrained('equips');
             $table->date('data_naixement');
             $table->integer('dorsal');

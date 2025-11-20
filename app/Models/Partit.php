@@ -10,7 +10,10 @@ class Partit extends Model
     use HasFactory;
 
     protected $fillable = ['local_id', 'visitant_id', 'estadi_id', 'data', 'jornada', 'gols_local', 'gols_visitant'];
-
+    protected $casts = [
+        'data' => 'date',
+    ];
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
