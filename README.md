@@ -1,62 +1,74 @@
-# ⚽ Guia de Futbol Femení (Laravel)
+# ⚽ Futbol Femení — Proyecto (Laravel)
 
-Miniaplicació MVC feta amb **Laravel**, **Blade**, **Vite** i **Sessions**.  
-Permet gestionar **Equips**, **Estadis**, **Jugadores** i **Partits** sense base de dades (les dades s’emmagatzemen en sessió).
+Breve descripción
 
----
+Proyecto MVC en Laravel para gestionar equipos, estadios, jugadoras y partidos. Implementa:
 
-## 🛠 Requisits previs
+-   Migraciones y modelos con relaciones (equipos ↔ jugadoras, partidos ↔ equipos/estadios).
+-   Arquitectura Service + Repository para jugadores/partits/equips.
+-   Formularios validados con FormRequest (validación de fechas, ficheros, campos numéricos).
+-   Factories y seeders que generan 18 equipos, jugadoras y un calendario (ida y vuelta) con resultados aleatorios cuando la fecha ya ha pasado.
+-   Vistas Blade y componentes reutilizables para mostrar equip, jugadora y partit.
 
-- PHP >= 8.1  
-- Composer  
-- Node.js i npm  
-- Laravel instal·lat (per exemple, amb `laravel new` o clonant aquest projecte)
+Este README explica cómo instalar y ejecutar la aplicación en local.
 
----
+## Requisitos
 
-## 🚀 Instal·lació i arrencada del projecte
+-   PHP >= 8.2
+-   Composer
+-   Node.js y npm
 
+## Instalación rápida
 
-##### 1. Clonar el repositori
+Clona el repositorio y entra en la carpeta:
+
 ```bash
-git clone https://github.com/JavLG14/futbol-femeni-JLG
+git clone https://github.com/JavLG14/futbol-femeni-JLG/tree/entrega2
 cd futbol-femeni-JLG
 ```
-##### 2. Instal·lar dependències PHP
+
+Instala dependencias PHP y JS:
+
 ```bash
 composer install
+npm install
 ```
-##### 3. Instal·lar dependències front-end
-```bash
-npm install && npm run dev
-```
-##### 4. Crear el fitxer .env
+
+Copia el fichero de entorno y genera la clave de aplicación:
+
 ```bash
 cp .env.example .env
-```
-##### 5. Generar la clau d'aplicació
-```bash
 php artisan key:generate
 ```
-##### 6. Arrencar el servidor local
+
+Configura la base de datos en `.env` (por defecto se usan migraciones para crear las tablas). Luego ejecuta las migraciones y los seeders opcionales:
+
 ```bash
+php artisan migrate
+php artisan db:seed --class=EquipsSeeder
+php artisan db:seed --class=JugadoresSeeder
+php artisan db:seed --class=CalendarioSeeder
+```
+
+Compila el frontend en modo desarrollo y arranca el servidor de Laravel:
+
+```bash
+npm run dev
 php artisan serve
 ```
 
+La app estará disponible típicamente en http://127.0.0.1:8000
+
+
+## Estructura y patrón de diseño
+
+-   Rutas: `routes/web.php`
+-   Controladores: `app/Http/Controllers/`
+-   Servicios: `app/Services/` (logica de negocio)
+-   Repositorios: `app/Repositories/` (acceso a datos)
+-   Modelos: `app/Models/`
+-   Vistas: `resources/views/` (componentes en `resources/views/components`)
+
 ---
 
-## 🧩 Funcionalitats
-
-- **Equips:** llistat, detall i alta d’equips.  
-- **Estadis:** llistat i alta d’estadis.  
-- **Jugadores:** llistat i alta de jugadores.  
-- **Partits:** llistat i alta de partits.  
-- Validació de formularis i dades en sessió (`SESSION_DRIVER=file`).
-
----
-[Preguntes de reflexió](Preguntes%20reflexió.pdf)
----
-
-## 👩‍💻 Autor
-
-Projecte desenvolupat per **Javier Llorens** per a l’exercici *“Futbol Femení I”*.
+Autor: Javier Llorens
