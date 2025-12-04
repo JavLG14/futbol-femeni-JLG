@@ -11,6 +11,7 @@ class Jugadora extends Model
 
     protected $table = 'jugadores';
     protected $fillable = ['nom', 'equip_id', 'data_naixement', 'dorsal', 'foto'];
+    //protected $visible = ['nom', 'dorsal'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
