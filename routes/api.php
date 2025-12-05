@@ -11,14 +11,16 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::apiResource('jugadores', JugadoraController::class)
-    ->parameters(['jugadores' => 'jugadora']);
+Route::name('api.')->group(function () {
+    Route::apiResource('jugadores', JugadoraController::class)
+        ->parameters(['jugadores' => 'jugadora']);
 
-Route::apiResource('estadis', EstadiController::class)
-    ->parameters(['estadis' => 'estadi']);
+    Route::apiResource('estadis', EstadiController::class)
+        ->parameters(['estadis' => 'estadi']);
 
-Route::apiResource('equips', EquipController::class)
-    ->parameters(['equips' => 'equip']);
+    Route::apiResource('equips', EquipController::class)
+        ->parameters(['equips' => 'equip']);
 
-Route::apiResource('partits', PartitController::class)
-    ->parameters(['partits' => 'partit']);
+    Route::apiResource('partits', PartitController::class)
+        ->parameters(['partits' => 'partit']);
+});
