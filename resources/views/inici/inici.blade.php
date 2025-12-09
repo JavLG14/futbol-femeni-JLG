@@ -1,6 +1,10 @@
-@extends('layouts.app')
-@section('title', "Inici")
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __("Inici") }}
+        </h2>
+    </x-slot>
 
-@section('content')
+
     <h1>Benvingut a la Guia d'Equips de Futbol Femení!</h1>
-@endsection
+</x-app-layout>

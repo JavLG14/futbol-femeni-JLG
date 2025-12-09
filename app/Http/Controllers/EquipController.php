@@ -7,9 +7,11 @@ use App\Http\Requests\UpdateEquipRequest;
 use App\Models\Equip;
 use App\Models\Estadi;
 use App\Services\EquipService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 class EquipController extends Controller {
+
+    use AuthorizesRequests;
     public function __construct(private EquipService $servei) {}
 
     // GET /equips
@@ -19,41 +21,40 @@ class EquipController extends Controller {
 
     // GET /equips/create
     public function create() {
+        $this->authorize('create',Equip::class);
         $estadis = Estadi::all();
         return view('equips.create',compact('estadis'));
     }
     // POST /equips
     public function store(StoreEquipRequest $request) {
-        $this->servei->guardar($request->validated());
+
+        $this->servei->guardar($request->validated(),$request->file('escut'));
         return redirect()->route('equips.index');
     }
 
     // GET /equips/{id}
     public function show(Equip $equip) {
-        // Obtener el equipo completo desde el service (por si hay carga adicional)
-        $equip = $this->servei->trobar($equip->id);
-
-        // Calcular edad media de las jugadoras y los últimos 5 partidos jugados
-        $edatMitjana = $this->servei->edatMitjana($equip->id);
-        $ultimsPartits = $this->servei->ultimsPartits($equip->id, 5);
-
-        return view('equips.show', compact('equip', 'edatMitjana', 'ultimsPartits'));
+        return view('equips.show', compact('equip'));
     }
 
     // GET /equips/{id}/edit
     public function edit(Equip $equip) {
-        return view('equips.edit', compact('equip'));
+        $this->authorize('update', $equip);
+        $estadis = Estadi::all();
+        return view('equips.edit', compact('equip','estadis'));
     }
 
     // PUT /equips/{id}/edit
-    public function update(Request $request, Equip $equip) {
-        $this->servei->actualitzar($equip->id, $request->validated());
+    public function update(UpdateEquipRequest $request, Equip $equip) {
+
+        $this->servei->actualitzar($equip->id, $request->validated(),$request->file('escut'));
         return redirect()->route('equips.index')->with('ok', 'Equip actualitzat');
     }
 
     // DELETE /equips/{id}
-    public function destroy($id) {
-        $this->servei->eliminar($id);
+    public function destroy(Equip $equip) {
+        $this->authorize('delete', $equip);
+        $this->servei->eliminar($equip->id);
         return redirect()->route('equips.index');
     }
 }
