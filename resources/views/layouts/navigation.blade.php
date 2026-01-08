@@ -15,21 +15,13 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('inici.inici')" :active="request()->routeIs('inici.inici')">
-                        {{ __('Inici') }}
+                    <x-nav-link :href="route('partits.historic')" :active="request()->routeIs('partits.historic')">
+                        {{ __('Històric Partits') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('equips.index')" :active="request()->routeIs('equips.*')">
-                        {{ __('Equips') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('estadis.index')" :active="request()->routeIs('estadis.*')">
-                        {{ __('Estadis') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('jugadores.index')" :active="request()->routeIs('jugadores.*')">
-                        {{ __('Jugadores') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('partits.index')" :active="request()->routeIs('partits.*')">
-                        {{ __('Partits') }}
-                    </x-nav-link>
+                </div>
+                <!-- Menu links with Breeze alignment and coloring -->
+                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    @include('partials.menu', ['linkClass' => 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out h-16'])
                 </div>
             </div>
 
@@ -55,6 +47,15 @@
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('setLocale', 'ca')">
+                            {{ __('Català') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('setLocale', 'es')">
+                            {{ __('Castellano') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('setLocale', 'en')">
+                            {{ __('English') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -92,18 +93,7 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('inici.inici')" :active="request()->routeIs('inici.inici')">
-                {{ __('Inici') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('equips.index')" :active="request()->routeIs('equips.*')">
-                {{ __('Equips') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('jugadores.index')" :active="request()->routeIs('jugadores.*')">
-                {{ __('Jugadores') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('partits.index')" :active="request()->routeIs('partits.*')">
-                {{ __('Partits') }}
-            </x-responsive-nav-link>
+
         </div>
 
         <!-- Responsive Settings Options -->
@@ -118,6 +108,15 @@
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('setLocale', 'ca')">
+                    {{ __('Català') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('setLocale', 'es')">
+                    {{ __('Castellano') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('setLocale', 'en')">
+                    {{ __('English') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->

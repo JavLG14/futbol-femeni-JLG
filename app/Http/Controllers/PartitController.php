@@ -61,4 +61,9 @@ class PartitController extends Controller
         $this->servei->delete($partit->id);
         return redirect()->route('partits.index')->with('ok', 'Partit eliminat correctament.');
     }
+
+    public function historic()
+    {
+        return view('partits.historic');
+    }
 }

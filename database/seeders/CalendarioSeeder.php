@@ -15,6 +15,12 @@ class CalendarioSeeder extends Seeder
         $faker = Faker::create();
 
         $equips = Equip::all();
+        $arbitres = \App\Models\User::where('role', 'arbitre')->get();
+
+        if ($arbitres->isEmpty()) {
+            $this->command->error("No hay árbitros disponibles. Ejecuta el UserSeeder primero.");
+            return;
+        }
 
         if ($equips->count() < 18) {
             $this->command->error("Se necesitan 18 equipos para generar el calendario.");
@@ -27,7 +33,8 @@ class CalendarioSeeder extends Seeder
             foreach ($equips as $visitant) {
 
                 // Evitar partido contra sí mismo
-                if ($local->id === $visitant->id) continue;
+                if ($local->id === $visitant->id)
+                    continue;
 
                 // ---------------------------------
                 // PARTIDO DE IDA
@@ -42,13 +49,14 @@ class CalendarioSeeder extends Seeder
                 $gVisitantIda = $fechaIda->isPast() ? rand(0, 5) : null;
 
                 Partit::create([
-                    'local_id'       => $local->id,
-                    'visitant_id'    => $visitant->id,
-                    'estadi_id'      => $local->estadi_id, // el local juega en casa
-                    'data'           => $fechaIda,
-                    'jornada'        => $jornada,
-                    'gols_local'     => $gLocalIda,
-                    'gols_visitant'  => $gVisitantIda,
+                    'local_id' => $local->id,
+                    'visitant_id' => $visitant->id,
+                    'estadi_id' => $local->estadi_id, // el local juega en casa
+                    'data' => $fechaIda,
+                    'jornada' => $jornada,
+                    'gols_local' => $gLocalIda,
+                    'gols_visitant' => $gVisitantIda,
+                    'arbitre_id' => $arbitres->random()->id,
                 ]);
 
                 // ---------------------------------
@@ -63,13 +71,14 @@ class CalendarioSeeder extends Seeder
                 $gVisitantVuelta = $fechaVuelta->isPast() ? rand(0, 5) : null;
 
                 Partit::create([
-                    'local_id'       => $visitant->id,
-                    'visitant_id'    => $local->id,
-                    'estadi_id'      => $visitant->estadi_id,
-                    'data'           => $fechaVuelta,
-                    'jornada'        => $jornada,
-                    'gols_local'     => $gLocalVuelta,
-                    'gols_visitant'  => $gVisitantVuelta,
+                    'local_id' => $visitant->id,
+                    'visitant_id' => $local->id,
+                    'estadi_id' => $visitant->estadi_id,
+                    'data' => $fechaVuelta,
+                    'jornada' => $jornada,
+                    'gols_local' => $gLocalVuelta,
+                    'gols_visitant' => $gVisitantVuelta,
+                    'arbitre_id' => $arbitres->random()->id,
                 ]);
 
                 $jornada++;

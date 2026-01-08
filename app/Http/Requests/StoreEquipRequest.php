@@ -24,7 +24,7 @@ class StoreEquipRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom'    => 'required|min:3',
+            'nom' => 'required|min:3',
             'estadi_id' => 'required|integer|exists:estadis,id',
             'titols' => 'required|integer|min:0',
             'escut' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
