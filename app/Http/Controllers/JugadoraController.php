@@ -11,7 +11,9 @@ use Illuminate\Http\Request;
 
 class JugadoraController extends Controller
 {
-    public function __construct(private JugadoraService $servei) {}
+    public function __construct(private JugadoraService $servei)
+    {
+    }
 
     // GET /jugadores
     public function index()
@@ -24,6 +26,7 @@ class JugadoraController extends Controller
     // GET /jugadoras/create
     public function create()
     {
+        $this->authorize('create', Jugadora::class);
         $equips = Equip::all(); // Para mostrar en dropdown
         return view('jugadores.create', compact('equips'));
     }
@@ -31,6 +34,7 @@ class JugadoraController extends Controller
     // POST /jugadores
     public function store(StoreJugadoraRequest $request)
     {
+        $this->authorize('create', Jugadora::class);
         $this->servei->createJugadora($request->validated());
         return redirect()->route('jugadores.index')->with('ok', 'Jugadora creada');
     }
@@ -45,6 +49,7 @@ class JugadoraController extends Controller
     // GET /jugadores/{id}/edit
     public function edit(Jugadora $jugadora)
     {
+        $this->authorize('update', $jugadora);
         $equips = Equip::all();
         return view('jugadores.edit', compact('jugadora', 'equips'));
     }
@@ -52,6 +57,7 @@ class JugadoraController extends Controller
     // PUT /jugadores/{id}
     public function update(UpdateJugadoraRequest $request, Jugadora $jugadora)
     {
+        $this->authorize('update', $jugadora);
         $this->servei->updateJugadora($jugadora->id, $request->validated());
         return redirect()->route('jugadores.index')->with('ok', 'Jugadora actualizada');
     }
@@ -59,6 +65,7 @@ class JugadoraController extends Controller
     // DELETE /jugadores/{id}
     public function destroy(Jugadora $jugadora)
     {
+        $this->authorize('delete', $jugadora);
         $this->servei->deleteJugadora($jugadora->id);
         return redirect()->route('jugadores.index')->with('ok', 'Jugadora eliminada');
     }

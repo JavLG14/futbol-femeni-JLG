@@ -1,74 +1,91 @@
 # ⚽ Futbol Femení — Proyecto (Laravel)
 
-Breve descripción
+## 📖 Descripción del Proyecto
 
-Proyecto MVC en Laravel para gestionar equipos, estadios, jugadoras y partidos. Implementa:
+Proyecto desarrollado en Laravel para la gestión completa de una liga de fútbol femenino. La aplicación permite administrar:
 
--   Migraciones y modelos con relaciones (equipos ↔ jugadoras, partidos ↔ equipos/estadios).
--   Arquitectura Service + Repository para jugadores/partits/equips.
--   Formularios validados con FormRequest (validación de fechas, ficheros, campos numéricos).
--   Factories y seeders que generan 18 equipos, jugadoras y un calendario (ida y vuelta) con resultados aleatorios cuando la fecha ya ha pasado.
--   Vistas Blade y componentes reutilizables para mostrar equip, jugadora y partit.
+-   **Equipos y Estadios**: Gestión de clubes y sus sedes.
+-   **Jugadoras**: Registro y gestión de plantillas.
+-   **Partidos**: Calendario de enfrentamientos, asignación de árbitros y registro de resultados.
+-   **Usuarios**: Sistema de roles (Administrador, Manager, Árbitro) con permisos específicos.
 
-Este README explica cómo instalar y ejecutar la aplicación en local.
+## 🚀 Instalación y Base de Datos
 
-## Requisitos
-
--   PHP >= 8.2
--   Composer
--   Node.js y npm
-
-## Instalación rápida
-
-Clona el repositorio y entra en la carpeta:
+Para inicializar la base de datos y cargar los datos de prueba (incluyendo usuarios, equipos y calendario de partidos), ejecuta el siguiente comando:
 
 ```bash
-git clone https://github.com/JavLG14/futbol-femeni-JLG/tree/entrega2
-cd futbol-femeni-JLG
+php artisan migrate:fresh --seed
 ```
 
-Instala dependencias PHP y JS:
+> **Nota**: Este comando borrará cualquier dato existente en la base de datos y la volverá a crear desde cero.
+
+### Herramientas de Desarrollo
+
+Si estás utilizando el entorno Docker (Sail), tienes acceso a las siguientes herramientas:
+
+-   **Base de Datos (phpMyAdmin/Adminer)**: [http://localhost:8081](http://localhost:8081)
+-   **Buzón de Correos (Mailpit)**: [http://localhost:8025](http://localhost:8025)  
+    _Aquí puedes ver los correos enviados por la aplicación, como las notificaciones de asignación de partidos a los árbitros._
+
+## 🔑 Credenciales de Acceso (Seeders)
+
+Al ejecutar los seeders, se crean los siguientes usuarios por defecto para pruebas (Password para todos: `password`):
+
+| Rol               | Email                 | Descripción                                                        |
+| :---------------- | :-------------------- | :----------------------------------------------------------------- |
+| **Administrador** | `admin@example.com`   | Acceso total a todas las secciones.                                |
+| **Árbitro**       | `arbitre@example.com` | Puede editar resultados de sus partidos y recibir notificaciones.  |
+| **Manager**       | `[id]@manager.com`    | Por ejemplo: `1@manager.com`. Gestiona solo su equipo y jugadoras. |
+
+## 🏗️ Arquitectura del Código
+
+El proyecto sigue patrones de diseño robustos para asegurar la mantenibilidad:
+
+-   **Patrón Service-Repository**: Desacopla la lógica de negocio (`Services`) del acceso a datos (`Repositories`), facilitando el testing y la escalabilidad.
+-   **Policies**: Gestionan la autorización, asegurando que solo usuarios con permisos específicos (como editar su propio equipo) puedan realizar acciones.
+-   **FormRequests**: Centralizan la validación de datos de entrada.
+
+## ✅ Tests
+
+El proyecto incluye una suite de tests automatizados para verificar la lógica de negocio, políticas de acceso y rutas.
+
+Para ejecutar **todos los tests**:
 
 ```bash
-composer install
-npm install
+php artisan test
 ```
 
-Copia el fichero de entorno y genera la clave de aplicación:
+### Tests Disponibles
+
+La suite cubre las siguientes áreas:
+
+-   **Unitarios (`tests/Unit`)**:
+    -   `EstadiServiceTest`, `JugadoraServiceTest`, `PartitServiceTest`: Verifican las operaciones CRUD.
+    -   `PolicyTest`: Verifica los permisos de acceso según el rol (Admin, Manager, Árbitro).
+    -   `RequestTest`: Verifica las reglas de validación de los formularios.
+-   **Feature (`tests/Feature`)**:
+    -   `RoutesTest`: Verifica que las rutas públicas son accesibles y las protegidas requieren autenticación/permisos.
+
+## 🛠️ Comandos de Aplicación
+
+La aplicación incluye comandos Artisan personalizados para el envío de notificaciones:
+
+### 1. Enviar Jornada a Managers
+
+Envía un resumen de la próxima jornada a todos los usuarios con rol de Manager.
 
 ```bash
-cp .env.example .env
-php artisan key:generate
+php artisan jornada:enviar
 ```
 
-Configura la base de datos en `.env` (por defecto se usan migraciones para crear las tablas). Luego ejecuta las migraciones y los seeders opcionales:
+### 2. Enviar Calendario a Árbitros
+
+Envía a cada árbitro un listado con todos los partidos que tiene asignados (pendientes y futuros).
 
 ```bash
-php artisan migrate
-php artisan db:seed --class=EquipsSeeder
-php artisan db:seed --class=JugadoresSeeder
-php artisan db:seed --class=CalendarioSeeder
+php artisan jornada:enviar-arbitres
 ```
-
-Compila el frontend en modo desarrollo y arranca el servidor de Laravel:
-
-```bash
-npm run dev
-php artisan serve
-```
-
-La app estará disponible típicamente en http://127.0.0.1:8000
-
-
-## Estructura y patrón de diseño
-
--   Rutas: `routes/web.php`
--   Controladores: `app/Http/Controllers/`
--   Servicios: `app/Services/` (logica de negocio)
--   Repositorios: `app/Repositories/` (acceso a datos)
--   Modelos: `app/Models/`
--   Vistas: `resources/views/` (componentes en `resources/views/components`)
 
 ---
 
-Autor: Javier Llorens
+**Autor:** Javier Llorens Gosalbez

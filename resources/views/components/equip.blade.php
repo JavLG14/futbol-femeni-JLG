@@ -52,7 +52,7 @@
                             <td class="border border-gray-300 p-2">{{ $partit->data?->format('d/m/Y') }}</td>
                             <td class="border border-gray-300 p-2">{{ $partit->local->nom }}</td>
                             <td class="border border-gray-300 p-2">{{ $partit->visitant->nom }}</td>
-                            <td class="border border-gray-300 p-2">{{ $partit->estadi->nom }}</td>
+                            <td class="border border-gray-300 p-2">{{ $partit->estadi->nom ?? 'Sense estadi'}}</td>
                             <td class="border border-gray-300 p-2">
                                 @if($partit->gols_local !== null && $partit->gols_visitant !== null)
                                     {{ $partit->gols_local }} - {{ $partit->gols_visitant }}

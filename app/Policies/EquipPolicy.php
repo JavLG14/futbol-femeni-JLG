@@ -11,7 +11,7 @@ class EquipPolicy
     public function create(User $user): bool
     {
         // Només els administradors poden crear equips
-         return $user->role === 'administrador';
+        return $user->role === 'administrador';
     }
 
     /**
@@ -32,7 +32,7 @@ class EquipPolicy
      */
     public function delete(User $user, Equip $equip)
     {
-        // Només els administradors poden eliminar equips
-        return $user->role === 'administrador';
+        // Administradors o Manager del propi equip
+        return $user->role === 'administrador' || ($user->role === 'manager' && $user->equip_id === $equip->id);
     }
 }

@@ -22,69 +22,100 @@ class CalendarioSeeder extends Seeder
             return;
         }
 
-        if ($equips->count() < 18) {
-            $this->command->error("Se necesitan 18 equipos para generar el calendario.");
+        if ($equips->count() < 18 || $equips->count() % 2 != 0) {
+            $this->command->error("Se necesitan 18 equipos (o un número par) para generar el calendario correctamente.");
             return;
         }
 
-        $jornada = 1;
+        $teamIds = $equips->pluck('id')->toArray();
+        $numTeams = count($teamIds);
+        $totalRounds = $numTeams - 1;
 
-        foreach ($equips as $local) {
-            foreach ($equips as $visitant) {
+        // Start date: Last Sunday of August 2025
+        $startDate = Carbon::create(2025, 8, 24)->startOfDay();
 
-                // Evitar partido contra sí mismo
-                if ($local->id === $visitant->id)
-                    continue;
+        // ---------------------------------
+        // GENERATE ROUNDS
+        // ---------------------------------
+        $rounds = [];
+        for ($i = 0; $i < $totalRounds; $i++) {
+            $roundMatches = [];
+            for ($j = 0; $j < $numTeams / 2; $j++) {
+                $home = $teamIds[$j];
+                $away = $teamIds[$numTeams - 1 - $j];
 
-                // ---------------------------------
-                // PARTIDO DE IDA
-                // ---------------------------------
+                if ($i % 2 == 0) {
+                    $roundMatches[] = ['local' => $home, 'visitant' => $away];
+                } else {
+                    $roundMatches[] = ['local' => $away, 'visitant' => $home];
+                }
+            }
+            $rounds[] = $roundMatches;
 
-                $fechaIda = Carbon::parse(
-                    $faker->dateTimeBetween('-2 months', '+3 months')
-                );
+            $last = array_pop($teamIds);
+            array_splice($teamIds, 1, 0, $last);
+        }
 
-                // si la fecha ya pasó → goles aleatorios
-                $gLocalIda = $fechaIda->isPast() ? rand(0, 5) : null;
-                $gVisitantIda = $fechaIda->isPast() ? rand(0, 5) : null;
+        // ---------------------------------
+        // CREATE MATCHES
+        // ---------------------------------
+
+        foreach ($rounds as $roundIndex => $matches) {
+            $jornada = $roundIndex + 1;
+            $matchDate = $startDate->copy()->addWeeks($roundIndex);
+
+            foreach ($matches as $match) {
+                $finalDate = $matchDate->copy()->subDays(rand(0, 1))->setTime(rand(16, 21), 0);
+
+                $played = $finalDate->isPast();
+
+                $localId = $match['local'];
+                $visitantId = $match['visitant'];
+                // Get stadium of local team
+                $localTeam = $equips->firstWhere('id', $localId);
 
                 Partit::create([
-                    'local_id' => $local->id,
-                    'visitant_id' => $visitant->id,
-                    'estadi_id' => $local->estadi_id, // el local juega en casa
-                    'data' => $fechaIda,
+                    'local_id' => $localId,
+                    'visitant_id' => $visitantId,
+                    'estadi_id' => $localTeam->estadi_id,
+                    'data' => $finalDate,
                     'jornada' => $jornada,
-                    'gols_local' => $gLocalIda,
-                    'gols_visitant' => $gVisitantIda,
+                    'gols_local' => $played ? rand(0, 5) : null,
+                    'gols_visitant' => $played ? rand(0, 5) : null,
                     'arbitre_id' => $arbitres->random()->id,
                 ]);
-
-                // ---------------------------------
-                // PARTIDO DE VUELTA
-                // ---------------------------------
-
-                $fechaVuelta = Carbon::parse(
-                    $faker->dateTimeBetween('-2 months', '+3 months')
-                );
-
-                $gLocalVuelta = $fechaVuelta->isPast() ? rand(0, 5) : null;
-                $gVisitantVuelta = $fechaVuelta->isPast() ? rand(0, 5) : null;
-
-                Partit::create([
-                    'local_id' => $visitant->id,
-                    'visitant_id' => $local->id,
-                    'estadi_id' => $visitant->estadi_id,
-                    'data' => $fechaVuelta,
-                    'jornada' => $jornada,
-                    'gols_local' => $gLocalVuelta,
-                    'gols_visitant' => $gVisitantVuelta,
-                    'arbitre_id' => $arbitres->random()->id,
-                ]);
-
-                $jornada++;
             }
         }
 
-        $this->command->info("Calendario generado correctamente (anada + tornada).");
+        // Vueltas
+        $secondLegStartDate = $startDate->copy()->addWeeks($totalRounds);
+
+        foreach ($rounds as $roundIndex => $matches) {
+            $jornada = $totalRounds + $roundIndex + 1;
+            $matchDate = $secondLegStartDate->copy()->addWeeks($roundIndex);
+
+            foreach ($matches as $match) {
+                $finalDate = $matchDate->copy()->subDays(rand(0, 1))->setTime(rand(16, 21), 0);
+                $played = $finalDate->isPast();
+
+                // Swap Home/Away
+                $localId = $match['visitant'];
+                $visitantId = $match['local'];
+                $localTeam = $equips->firstWhere('id', $localId);
+
+                Partit::create([
+                    'local_id' => $localId,
+                    'visitant_id' => $visitantId,
+                    'estadi_id' => $localTeam->estadi_id,
+                    'data' => $finalDate,
+                    'jornada' => $jornada,
+                    'gols_local' => $played ? rand(0, 5) : null,
+                    'gols_visitant' => $played ? rand(0, 5) : null,
+                    'arbitre_id' => $arbitres->random()->id,
+                ]);
+            }
+        }
+
+        $this->command->info("Calendario generado correctamente: " . ($totalRounds * 2) . " jornadas.");
     }
 }

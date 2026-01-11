@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __("Calendari de Partits") }}
+            {{ __("Calendari de partits") }}
         </h2>
     </x-slot>
 
@@ -10,26 +10,21 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
 
-                <h1 class="text-3xl font-bold text-blue-800 mb-6">Calendari de partits</h1>
+                <h1 class="text-3xl font-bold text-blue-800 mb-6">{{ __('Calendari de partits') }}</h1>
 
                 <div class="container">
-
-                    <p class="mb-4">
-                        <a href="{{ route('partits.create') }}" class="bg-blue-600 text-white px-3 py-2 rounded">Afegir
-                            partit</a>
-                    </p>
 
                     <div class="overflow-x-auto">
                         <table class="w-full border-collapse border border-gray-300">
                             <thead class="bg-gray-200">
                                 <tr>
-                                    <th class="border border-gray-300 p-2">Jornada</th>
-                                    <th class="border border-gray-300 p-2">Fecha</th>
-                                    <th class="border border-gray-300 p-2">Local</th>
-                                    <th class="border border-gray-300 p-2">Visitant</th>
-                                    <th class="border border-gray-300 p-2">Estadi</th>
-                                    <th class="border border-gray-300 p-2">Resultat</th>
-                                    <th class="border border-gray-300 p-2">Accions</th>
+                                    <th class="border border-gray-300 p-2">{{ __('Jornada') }}</th>
+                                    <th class="border border-gray-300 p-2">{{ __('Fecha') }}</th>
+                                    <th class="border border-gray-300 p-2">{{ __('Local') }}</th>
+                                    <th class="border border-gray-300 p-2">{{ __('Visitant') }}</th>
+                                    <th class="border border-gray-300 p-2">{{ __('Estadi') }}</th>
+                                    <th class="border border-gray-300 p-2">{{ __('Resultat') }}</th>
+                                    <th class="border border-gray-300 p-2">{{ __('Accions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -39,17 +34,18 @@
                                         <td class="border border-gray-300 p-2">{{ $partit->data->format('d/m/Y') }}</td>
                                         <td class="border border-gray-300 p-2">{{ $partit->local->nom }}</td>
                                         <td class="border border-gray-300 p-2">{{ $partit->visitant->nom }}</td>
-                                        <td class="border border-gray-300 p-2">{{ $partit->estadi->nom }}</td>
+                                        <td class="border border-gray-300 p-2">
+                                            {{ $partit->estadi->nom ?? __('Sense estadi') }}</td>
                                         <td class="border border-gray-300 p-2">
                                             @if($partit->gols_local !== null && $partit->gols_visitant !== null)
                                                 {{ $partit->gols_local }} - {{ $partit->gols_visitant }}
                                             @else
-                                                Pendiente
+                                                {{ __('Pendiente') }}
                                             @endif
                                         </td>
                                         <td class="border border-gray-300 p-2">
                                             <a href="{{ route('partits.show', $partit) }}"
-                                                class="text-blue-700 hover:underline">Ver</a>
+                                                class="text-blue-700 hover:underline">{{ __('Ver') }}</a>
                                         </td>
                                     </tr>
                                 @endforeach

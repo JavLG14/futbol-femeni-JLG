@@ -16,12 +16,14 @@ class PartitFactory extends Factory
         $date = $this->faker->dateTimeBetween('-1 year', '+1 year');
 
         return [
-            'local_id' => Equip::inRandomOrder()->first()->id,
-            'visitant_id' => Equip::inRandomOrder()->whereNot('id', '!=', null)->first()->id, // luego se filtra en el seeder
-            'estadi_id' => \App\Models\Estadi::inRandomOrder()->first()->id,
+            'local_id' => Equip::factory(),
+            'visitant_id' => Equip::factory(),
+            'estadi_id' => \App\Models\Estadi::factory(),
+            'arbitre_id' => \App\Models\User::factory()->state(['role' => 'arbitre']), // Ensure arbitre exists
             'data' => $date,
             'jornada' => 1,
-            'gols' => null, // se puede generar más adelante si la fecha ya pasó
+            'gols_local' => null,
+            'gols_visitant' => null,
         ];
     }
 }

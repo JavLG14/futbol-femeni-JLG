@@ -10,7 +10,7 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
       <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
 
-        <h1 class="text-3xl font-bold text-blue-800 mb-6">Guia d'Equips</h1>
+        <h1 class="text-3xl font-bold text-blue-800 mb-6">{{ __("Guia d'Equips") }}</h1>
 
         @if (session('success'))
           <div class="bg-green-100 text-green-700 p-2 mb-4">{{ session('success') }}</div>
@@ -39,7 +39,7 @@
                   <a href="{{ route('equips.show', $equip->id) }}"
                     class="text-blue-700 hover:underline">{{ $equip->nom }}</a>
                 </td>
-                <td class="border border-gray-300 p-2">{{ $equip->estadi->nom }}</td>
+                <td class="border border-gray-300 p-2">{{ $equip->estadi->nom ?? __('Sense estadi') }}</td>
                 <td class="border border-gray-300 p-2">{{ $equip->titols }}</td>
                 <td class="border border-gray-300 p-2">
                   <div class="flex space-x-2">
@@ -51,7 +51,7 @@
                     @endcan
                     @can('delete', $equip)
                       <form action="{{ route('equips.destroy', $equip->id) }}" method="POST"
-                        onsubmit="return confirm('Segur que vols eliminar aquest equip?');">
+                        onsubmit="return confirm('{{ __('Segur que vols eliminar aquest equip?') }}');">
                         @csrf
                         @method('DELETE')
                         <button type="submit"

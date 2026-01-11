@@ -10,28 +10,15 @@ use Illuminate\Http\Request;
 
 class PartitController extends Controller
 {
-    public function __construct(private PartitService $servei) {}
+    public function __construct(private PartitService $servei)
+    {
+    }
 
     // GET /partits
     public function index()
     {
         $partits = $this->servei->getAll();
         return view('partits.index', compact('partits'));
-    }
-
-    // GET /partits/create
-    public function create()
-    {
-        $equips = $this->servei->getEquips();
-        $estadis = $this->servei->getEstadis();
-        return view('partits.create', compact('equips', 'estadis'));
-    }
-
-    // POST /partits
-    public function store(StorePartitRequest $request)
-    {
-        $this->servei->create($request->validated());
-        return redirect()->route('partits.index')->with('ok', 'Partit creat correctament.');
     }
 
     // GET /partits/{id}
@@ -43,6 +30,7 @@ class PartitController extends Controller
     // GET /partits/{id}/edit
     public function edit(Partit $partit)
     {
+        $this->authorize('update', $partit);
         $equips = $this->servei->getEquips();
         $estadis = $this->servei->getEstadis();
         return view('partits.edit', compact('partit', 'equips', 'estadis'));
@@ -51,6 +39,7 @@ class PartitController extends Controller
     // PUT /partits/{id}
     public function update(UpdatePartitRequest $request, Partit $partit)
     {
+        $this->authorize('update', $partit);
         $this->servei->update($partit->id, $request->validated());
         return redirect()->route('partits.index')->with('ok', 'Partit actualitzat correctament.');
     }
@@ -58,6 +47,7 @@ class PartitController extends Controller
     // DELETE /partits/{id}
     public function destroy(Partit $partit)
     {
+        $this->authorize('delete', $partit);
         $this->servei->delete($partit->id);
         return redirect()->route('partits.index')->with('ok', 'Partit eliminat correctament.');
     }

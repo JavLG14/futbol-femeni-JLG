@@ -9,7 +9,11 @@ use App\Services\EstadiService;
 
 class EstadiController extends Controller
 {
-    public function __construct(private EstadiService $servei) {}
+    use \Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+    public function __construct(private EstadiService $servei)
+    {
+    }
 
     public function index()
     {
@@ -23,28 +27,33 @@ class EstadiController extends Controller
 
     public function create()
     {
+        $this->authorize('create', Estadi::class);
         return view('estadis.create');
     }
 
     public function store(StoreEstadiRequest $request)
     {
+        $this->authorize('create', Estadi::class);
         $this->servei->guardar($request->validated());
         return redirect()->route('estadis.index')->with('success', 'Estadi creat correctament!');
     }
 
     public function edit(Estadi $estadi)
     {
+        $this->authorize('update', $estadi);
         return view('estadis.edit', compact('estadi'));
     }
 
     public function update(UpdateEstadiRequest $request, Estadi $estadi)
     {
+        $this->authorize('update', $estadi);
         $this->servei->actualitzar($estadi->id, $request->validated());
         return redirect()->route('estadis.index')->with('success', 'Estadi actualitzat correctament!');
     }
 
     public function destroy(Estadi $estadi)
     {
+        $this->authorize('delete', $estadi);
         $this->servei->eliminar($estadi->id);
         return redirect()->route('estadis.index')->with('success', 'Estadi eliminat correctament!');
     }

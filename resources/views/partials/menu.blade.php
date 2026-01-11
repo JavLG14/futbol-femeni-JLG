@@ -1,13 +1,14 @@
 <nav>
   <ul class="flex space-x-4">
-    <li><a class="{{ $linkClass ?? 'text-white hover:underline' }}" href="/">Inici</a></li>
-    <li><a class="{{ $linkClass ?? 'text-white hover:underline' }}" href="{{ route('equips.index') }}">Guia d'Equips</a>
+    <li><a class="{{ $linkClass ?? 'text-white hover:underline' }}" href="/">{{ __('Inici') }}</a></li>
+    <li><a class="{{ $linkClass ?? 'text-white hover:underline' }}"
+        href="{{ route('equips.index') }}">{{ __("Guia d'Equips") }}</a>
     </li>
-    <li><a class="{{ $linkClass ?? 'text-white hover:underline' }}" href="{{ route('estadis.index') }}">Llistat
-        d'Estadis</a></li>
-    <li><a class="{{ $linkClass ?? 'text-white hover:underline' }}" href="{{ route('jugadores.index') }}">Llistat de
-        jugadores</a></li>
-    <li><a class="{{ $linkClass ?? 'text-white hover:underline' }}" href="{{ route('partits.index') }}">Llistat de
-        Partits</a></li>
+    <li><a class="{{ $linkClass ?? 'text-white hover:underline' }}"
+        href="{{ route('estadis.index') }}">{{ __("Llistat d'Estadis") }}</a></li>
+    <li><a class="{{ $linkClass ?? 'text-white hover:underline' }}"
+        href="{{ route('jugadores.index') }}">{{ __('Llistat de jugadores') }}</a></li>
+    <li><a class="{{ $linkClass ?? 'text-white hover:underline' }}"
+        href="{{ route('partits.index') }}">{{ __('Llistat de Partits') }}</a></li>
   </ul>
 </nav>
