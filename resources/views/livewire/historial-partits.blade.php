@@ -5,6 +5,9 @@
         <x-primary-button wire:click="filtrar">
             {{ __('Filtrar') }}
         </x-primary-button>
+        <x-primary-button wire:click="reiniciar">
+            {{ __('Reiniciar') }}
+        </x-primary-button>
     </div>
 
     <table class="table-auto w-full mt-4">
@@ -17,13 +20,16 @@
                     {{ __('Data') }} @if($sortField === 'data') {{ $sortDirection === 'asc' ? '↑' : '↓' }} @endif
                 </th>
                 <th class="cursor-pointer hover:bg-gray-100" wire:click="sortBy('local')">
-                    {{ __('Equip Local') }} @if($sortField === 'local') {{ $sortDirection === 'asc' ? '↑' : '↓' }} @endif
+                    {{ __('Equip Local') }} @if($sortField === 'local') {{ $sortDirection === 'asc' ? '↑' : '↓' }}
+                    @endif
                 </th>
                 <th class="cursor-pointer hover:bg-gray-100" wire:click="sortBy('visitant')">
-                    {{ __('Equip Visitant') }} @if($sortField === 'visitant') {{ $sortDirection === 'asc' ? '↑' : '↓' }} @endif
+                    {{ __('Equip Visitant') }} @if($sortField === 'visitant') {{ $sortDirection === 'asc' ? '↑' : '↓' }}
+                    @endif
                 </th>
                 <th class="cursor-pointer hover:bg-gray-100" wire:click="sortBy('resultat')">
-                    {{ __('Resultat') }} @if($sortField === 'resultat') {{ $sortDirection === 'asc' ? '↑' : '↓' }} @endif
+                    {{ __('Resultat') }} @if($sortField === 'resultat') {{ $sortDirection === 'asc' ? '↑' : '↓' }}
+                    @endif
                 </th>
                 <th class="cursor-pointer hover:bg-gray-100" wire:click="sortBy('estadi')">
                     {{ __('Estadi') }} @if($sortField === 'estadi') {{ $sortDirection === 'asc' ? '↑' : '↓' }} @endif
@@ -47,4 +53,7 @@
             @endforeach
         </tbody>
     </table>
+    <div class="mt-4">
+        {{ $partits->links() }}
+    </div>
 </div>

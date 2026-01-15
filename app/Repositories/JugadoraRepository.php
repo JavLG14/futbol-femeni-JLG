@@ -8,7 +8,7 @@ class JugadoraRepository implements BaseRepository
 {
     public function getAll()
     {
-        return Jugadora::all();
+        return Jugadora::paginate(50);
     }
 
     public function find($id)
