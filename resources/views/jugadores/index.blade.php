@@ -18,7 +18,8 @@
 
                 @can('create', App\Models\Jugadora::class)
                     <p class="mb-4">
-                        <a href="{{ route('jugadores.create') }}" class="bg-blue-600 text-white px-3 py-2 rounded">{{ __('Afegir jugadora') }}</a>
+                        <a href="{{ route('jugadores.create') }}"
+                            class="bg-blue-600 text-white px-3 py-2 rounded">{{ __('Afegir jugadora') }}</a>
                     </p>
                 @endcan
 
@@ -38,13 +39,18 @@
                                     <a href="{{ route('jugadores.show', $jugadora->id) }}"
                                         class="text-blue-700 hover:underline">{{ $jugadora->nom }}</a>
                                 </td>
-                                <td class="border border-gray-300 p-2">{{ $jugadora->equip?->nom ?? __('Sense equip') }}</td>
+                                <td class="border border-gray-300 p-2">{{ $jugadora->equip?->nom ?? __('Sense equip') }}
+                                </td>
                                 <td class="border border-gray-300 p-2">{{ $jugadora->dorsal }}</td>
                                 <td class="border border-gray-300 p-2">{{ $jugadora->data_naixement }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+
+                <div class="mt-4">
+                    {{ $jugadores->links() }}
+                </div>
             </div>
         </div>
     </div>

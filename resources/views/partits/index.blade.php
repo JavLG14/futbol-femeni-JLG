@@ -35,7 +35,8 @@
                                         <td class="border border-gray-300 p-2">{{ $partit->local->nom }}</td>
                                         <td class="border border-gray-300 p-2">{{ $partit->visitant->nom }}</td>
                                         <td class="border border-gray-300 p-2">
-                                            {{ $partit->estadi->nom ?? __('Sense estadi') }}</td>
+                                            {{ $partit->estadi->nom ?? __('Sense estadi') }}
+                                        </td>
                                         <td class="border border-gray-300 p-2">
                                             @if($partit->gols_local !== null && $partit->gols_visitant !== null)
                                                 {{ $partit->gols_local }} - {{ $partit->gols_visitant }}
@@ -52,8 +53,12 @@
                             </tbody>
                         </table>
                     </div>
+                </div> <!-- container -->
+                <div class="mt-4">
+                    {{ $partits->links() }}
                 </div>
-            </div>
+            </div> <!-- bg-white -->
         </div>
     </div>
+
 </x-app-layout>

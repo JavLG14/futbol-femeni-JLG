@@ -10,7 +10,7 @@ class PartitRepository implements BaseRepository
     {
         return Partit::with(['local', 'visitant', 'estadi'])
             ->orderBy('jornada')
-            ->get();
+            ->paginate(50);
     }
 
     public function find($id)

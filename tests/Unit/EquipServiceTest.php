@@ -9,7 +9,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Mockery;
 use Tests\TestCase;
-use App\Repositories\BaseRepository;
+use App\Repositories\EquipRepository;
 
 class EquipServiceTest extends TestCase
 {
@@ -19,7 +19,7 @@ class EquipServiceTest extends TestCase
     {
         Storage::fake('public');
 
-        $repo = Mockery::mock(BaseRepository::class);
+        $repo = Mockery::mock(EquipRepository::class);
 
         $data = ['nom' => 'FC Barcelona', 'titols' => 30];
         $escut = UploadedFile::fake()->image('escut.png', 200, 200);
@@ -43,7 +43,7 @@ class EquipServiceTest extends TestCase
     {
         Storage::fake('public');
 
-        $repo = Mockery::mock(BaseRepository::class);
+        $repo = Mockery::mock(EquipRepository::class);
         $equip = new Equip(['id' => 1, 'nom' => 'Barça', 'escut' => 'escuts/vell.png']);
 
         // fitxer antic simulat
@@ -68,7 +68,7 @@ class EquipServiceTest extends TestCase
     {
         Storage::fake('public');
 
-        $repo = Mockery::mock(BaseRepository::class);
+        $repo = Mockery::mock(EquipRepository::class);
         $equip = new Equip(['id' => 2, 'escut' => 'escuts/logo.png']);
         Storage::disk('public')->put($equip->escut, 'dummy');
 
