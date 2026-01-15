@@ -8,6 +8,22 @@ use App\Models\User;
 class JugadoraPolicy
 {
     /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(?User $user): bool
+    {
+        return true;
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(?User $user, Jugadora $jugadora): bool
+    {
+        return true;
+    }
+
+    /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
