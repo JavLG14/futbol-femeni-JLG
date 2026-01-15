@@ -11,7 +11,11 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
 
                 @if(auth()->check() && auth()->user()->role === 'administrador')
-                    <div class="mb-4 text-left">
+                    <div class="mb-4 text-left flex gap-2">
+                        <a href="{{ route('estadis.edit', $estadi->id) }}"
+                            class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                            {{ __('Editar estadi') }}
+                        </a>
                         <form action="{{ route('estadis.destroy', $estadi->id) }}" method="POST"
                             onsubmit="return confirm('Estàs segur que vols eliminar aquest estadi?');">
                             @csrf

@@ -19,7 +19,7 @@ class PartitFactory extends Factory
             'local_id' => Equip::factory(),
             'visitant_id' => Equip::factory(),
             'estadi_id' => \App\Models\Estadi::factory(),
-            'arbitre_id' => \App\Models\User::factory()->state(['role' => 'arbitre']), // Ensure arbitre exists
+            'arbitre_id' => \App\Models\User::factory()->state(['role' => 'arbitre']),
             'data' => $date,
             'jornada' => 1,
             'gols_local' => null,

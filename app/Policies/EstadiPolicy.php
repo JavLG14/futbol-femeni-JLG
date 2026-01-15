@@ -8,6 +8,22 @@ use App\Models\User;
 class EstadiPolicy
 {
     /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(?User $user): bool
+    {
+        return true;
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(?User $user, Estadi $estadi): bool
+    {
+        return true;
+    }
+
+    /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool

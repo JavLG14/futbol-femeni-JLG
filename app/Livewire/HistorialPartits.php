@@ -59,7 +59,6 @@ class HistorialPartits extends Component
                 $query->whereDate('data', $this->data);
             });
 
-        // Get all results to sort in memory (preserving existing logic)
         $collection = $query->get();
 
         // Custom sorting
