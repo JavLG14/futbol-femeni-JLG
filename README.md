@@ -4,10 +4,10 @@
 
 Proyecto desarrollado en Laravel para la gestión completa de una liga de fútbol femenino. La aplicación permite administrar:
 
--   **Equipos y Estadios**: Gestión de clubes y sus sedes.
--   **Jugadoras**: Registro y gestión de plantillas.
--   **Partidos**: Calendario de enfrentamientos, asignación de árbitros y registro de resultados.
--   **Usuarios**: Sistema de roles (Administrador, Manager, Árbitro) con permisos específicos.
+- **Equipos y Estadios**: Gestión de clubes y sus sedes.
+- **Jugadoras**: Registro y gestión de plantillas.
+- **Partidos**: Calendario de enfrentamientos, asignación de árbitros y registro de resultados.
+- **Usuarios**: Sistema de roles (Administrador, Manager, Árbitro) con permisos específicos.
 
 ## 🚀 Instalación y Base de Datos
 
@@ -23,9 +23,9 @@ php artisan migrate:fresh --seed
 
 Si estás utilizando el entorno Docker (Sail), tienes acceso a las siguientes herramientas:
 
--   **Base de Datos (phpMyAdmin/Adminer)**: [http://localhost:8081](http://localhost:8081)
--   **Buzón de Correos (Mailpit)**: [http://localhost:8025](http://localhost:8025)  
-    _Aquí puedes ver los correos enviados por la aplicación, como las notificaciones de asignación de partidos a los árbitros._
+- **Base de Datos (phpMyAdmin/Adminer)**: [http://localhost:8081](http://localhost:8081)
+- **Buzón de Correos (Mailpit)**: [http://localhost:8025](http://localhost:8025)  
+  _Aquí puedes ver los correos enviados por la aplicación, como las notificaciones de asignación de partidos a los árbitros._
 
 ## 🔑 Credenciales de Acceso (Seeders)
 
@@ -41,9 +41,9 @@ Al ejecutar los seeders, se crean los siguientes usuarios por defecto para prueb
 
 El proyecto sigue patrones de diseño robustos para asegurar la mantenibilidad:
 
--   **Patrón Service-Repository**: Desacopla la lógica de negocio (`Services`) del acceso a datos (`Repositories`), facilitando el testing y la escalabilidad.
--   **Policies**: Gestionan la autorización, asegurando que solo usuarios con permisos específicos (como editar su propio equipo) puedan realizar acciones.
--   **FormRequests**: Centralizan la validación de datos de entrada.
+- **Patrón Service-Repository**: Desacopla la lógica de negocio (`Services`) del acceso a datos (`Repositories`), facilitando el testing y la escalabilidad.
+- **Policies**: Gestionan la autorización, asegurando que solo usuarios con permisos específicos (como editar su propio equipo) puedan realizar acciones.
+- **FormRequests**: Centralizan la validación de datos de entrada.
 
 ## ✅ Tests
 
@@ -59,12 +59,12 @@ php artisan test
 
 La suite cubre las siguientes áreas:
 
--   **Unitarios (`tests/Unit`)**:
-    -   `EstadiServiceTest`, `JugadoraServiceTest`, `PartitServiceTest`: Verifican las operaciones CRUD.
-    -   `PolicyTest`: Verifica los permisos de acceso según el rol (Admin, Manager, Árbitro).
-    -   `RequestTest`: Verifica las reglas de validación de los formularios.
--   **Feature (`tests/Feature`)**:
-    -   `RoutesTest`: Verifica que las rutas públicas son accesibles y las protegidas requieren autenticación/permisos.
+- **Unitarios (`tests/Unit`)**:
+    - `EstadiServiceTest`, `JugadoraServiceTest`, `PartitServiceTest`: Verifican las operaciones CRUD.
+    - `PolicyTest`: Verifica los permisos de acceso según el rol (Admin, Manager, Árbitro).
+    - `RequestTest`: Verifica las reglas de validación de los formularios.
+- **Feature (`tests/Feature`)**:
+    - `RoutesTest`: Verifica que las rutas públicas son accesibles y las protegidas requieren autenticación/permisos.
 
 ## 🛠️ Comandos de Aplicación
 
@@ -85,6 +85,51 @@ Envía a cada árbitro un listado con todos los partidos que tiene asignados (pe
 ```bash
 php artisan jornada:enviar-arbitres
 ```
+
+---
+
+## 6a.- Desarrollo de APIs REST con Laravel
+
+Se ha implementado una API REST completa para la gestión de la aplicación, utilizando recursos API (`JsonResource`, `ResourceCollection`) y políticas de acceso.
+
+### Endpoints Principales
+
+Tots els endpoints de recursos (`/api/*`) retornen respostes JSON estandarditzades.
+
+#### 1. Jugadores (`/api/jugadores`)
+
+- **GET /**: Llistat paginat de jugadores (Públic).
+- **GET /{jugadora}**: Detall d'una jugadora (Públic).
+- **POST /**: Crear jugadora (Només Administradors).
+- **PUT/DELETE /{jugadora}**: Editar/Eliminar (Administradors o el Manager del seu equip).
+
+#### 2. Partits (`/api/partits`)
+
+- **GET /**: Listado paginado de partidos (Jornada, Data, Equips, Estadi, Àrbitre).
+- **GET /{partit}**: Detalle del partido.
+- **POST /**: Crear partido (Solo Administradores).
+- **PUT /{partit}**: Actualizar resultado (Solo Administradores o el Árbitro asignado).
+- **DELETE /{partit}**: Eliminar partido (Solo Administradores).
+
+#### 3. Estadis (`/api/estadis`)
+
+- **GET /**: Listado paginado de estadios.
+- **GET /{estadi}**: Detalle del estadio.
+- **POST/PUT/DELETE**: Gestión completa (Exclusivo Administradores).
+
+#### 4. Equips (`/api/equips`)
+
+- **GET /**: Listado paginado de equipos.
+- **GET /{equip}**: Detalle del equipo incluyendo URL del escudo.
+- **POST /**: Crear equipo (Solo Administradores).
+- **PUT/DELETE /{equip}**: Editar/Eliminar (Administradores o el Manager del equipo).
+
+#### 5. Autenticación y Perfil
+
+- **POST /api/login**: Obtener token de acceso (Sanctum).
+- **POST /api/register**: Registro de nuevos usuarios.
+- **POST /api/logout**: Revocar token.
+- **GET /api/profile**: Devuelve los datos del usuario autenticado, su rol y una lista de permisos.
 
 ---
 
