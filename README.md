@@ -133,4 +133,64 @@ Tots els endpoints de recursos (`/api/*`) retornen respostes JSON estandarditzad
 
 ---
 
+## 📋 Parámetros de API (Referencia Rápida)
+
+Listado detallado de los parámetros necesarios para las peticiones POST y PUT, organizado por recurso.
+
+### 1. Autenticación (`/api/`)
+
+| Endpoint     | Método           | Parámetros Requeridos                                                                                      |
+| :----------- | :--------------- | :--------------------------------------------------------------------------------------------------------- |
+| **Login**    | `POST /login`    | - `email` (email)<br>- `password` (string)                                                                 |
+| **Registro** | `POST /register` | - `name` (string)<br>- `email` (email)<br>- `password` (string)<br>- `confirm_password` (same as password) |
+| **Logout**   | `POST /logout`   | _(Requiere token Bearer en cabecera)_                                                                      |
+
+### 2. Equipos (`/api/equips`)
+
+**POST (Crear) - `/api/equips`**
+
+- `nom`: (Requerido) Mínimo 3 caracteres.
+- `estadi_id`: (Requerido) ID válido de un estadio existente.
+- `titols`: (Requerido) Número entero, mínimo 0.
+- `escut`: (Opcional) Imagen (jpeg, png, jpg), máx 2MB.
+
+**PUT (Actualizar) - `/api/equips/{id}`**
+
+- `nom`: (Opcional si no cambia) Único en la tabla equipos.
+- `estadi_id`: (Opcional) ID válido de estadio.
+- `titols`: (Opcional) Entero, mínimo 0.
+- `escut`: (Opcional) Imagen.
+    > **Nota:** Para actualizar ficheros (escut) mediante PUT, a veces es necesario enviar como `POST` añadiendo el campo `_method` = `PUT` en el body si tienes problemas con `multipart/form-data`.
+
+### 3. Estadios (`/api/estadis`)
+
+**POST / PUT - `/api/estadis`** (Mismos parámetros para crear y actualizar)
+
+- `nom`: (Requerido) Texto entre 3 y 255 caracteres.
+- `capacitat`: (Requerido) Número entero, mínimo 0.
+
+### 4. Jugadoras (`/api/jugadores`)
+
+**POST / PUT - `/api/jugadores`**
+
+- `nom`: (Requerido) Texto, máx 255 caracteres.
+- `dorsal`: (Requerido) Número entero, mínimo 0.
+- `equip_id`: (Requerido) ID válido de un equipo existente.
+- `data_naixement`: (Requerido) Fecha (YYYY-MM-DD), debe tener al menos 16 años.
+- `foto`: (Opcional) Archivo de imagen (solo **png**), máx 2MB.
+
+### 5. Partidos (`/api/partits`)
+
+**POST / PUT - `/api/partits`**
+
+- `local_id`: (Requerido) ID equipo local (diferente al visitante).
+- `visitant_id`: (Requerido) ID equipo visitante (diferente al local).
+- `estadi_id`: (Requerido) ID válido de un estadio.
+- `data`: (Requerido) Fecha válida.
+- `jornada`: (Requerido) Número entero, mínimo 1.
+- `gols_local`: (Opcional) Entero, mínimo 0.
+- `gols_visitant`: (Opcional) Entero, mínimo 0.
+
+---
+
 **Autor:** Javier Llorens Gosalbez
