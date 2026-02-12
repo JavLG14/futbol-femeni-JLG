@@ -18,6 +18,10 @@
                     <x-nav-link :href="route('partits.historic')" :active="request()->routeIs('partits.historic')">
                         {{ __('Històric Partits') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('classificacio.index')"
+                        :active="request()->routeIs('classificacio.index')">
+                        {{ __('Classificació') }}
+                    </x-nav-link>
                 </div>
                 <!-- Menu links with Breeze alignment and coloring -->
                 <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -82,7 +86,7 @@
                                 @csrf
 
                                 <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
-                                                            this.closest('form').submit();">
+                                                                this.closest('form').submit();">
                                     {{ __('Log Out') }}
                                 </x-dropdown-link>
                             </form>

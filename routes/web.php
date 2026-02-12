@@ -14,6 +14,7 @@ Route::get('/', [IniciController::class, 'index'])->name('inici.inici');
 Route::get('/historic', [PartitController::class, 'historic'])->name('partits.historic');
 
 Route::get('/historic', [PartitController::class, 'historic'])->name('partits.historic');
+Route::get('/classificacio', \App\Livewire\Clasificacio::class)->name('classificacio.index');
 
 Route::get('/auth/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('google.redirect');
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('google.callback');
