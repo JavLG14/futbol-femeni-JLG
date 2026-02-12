@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePartitRequest;
 use App\Models\Partit;
 use App\Services\PartitService;
 use Illuminate\Http\Request;
+use App\Events\PartitActualitzat;
 
 class PartitController extends Controller
 {
@@ -41,6 +42,7 @@ class PartitController extends Controller
     {
         $this->authorize('update', $partit);
         $this->servei->update($partit->id, $request->validated());
+        PartitActualitzat::dispatch($partit->id);
         return redirect()->route('partits.index')->with('ok', 'Partit actualitzat correctament.');
     }
 
@@ -49,6 +51,7 @@ class PartitController extends Controller
     {
         $this->authorize('delete', $partit);
         $this->servei->delete($partit->id);
+        PartitActualitzat::dispatch($partit->id);
         return redirect()->route('partits.index')->with('ok', 'Partit eliminat correctament.');
     }
 

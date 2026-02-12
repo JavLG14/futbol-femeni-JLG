@@ -8,6 +8,7 @@ use App\Http\Requests\StorePartitRequest;
 use App\Http\Requests\UpdatePartitRequest;
 use App\Http\Resources\PartitResource;
 use App\Http\Resources\PartitCollection;
+use App\Events\PartitActualitzat;
 
 class PartitController extends Controller
 {
@@ -38,6 +39,7 @@ class PartitController extends Controller
     {
         // Policy handles if user is admin or assigned arbitre
         $partit->update($request->validated());
+        PartitActualitzat::dispatch($partit->id);
         return response()->json(new PartitResource($partit), 200);
     }
 

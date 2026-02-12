@@ -1,4 +1,4 @@
-<div>
+<div wire:key="historial-{{ $refreshKey }}">
     <div class="flex space-x-4">
         <input wire:model="equip" type="text" placeholder="{{ __('Cerca equip') }}" class="border px-4 py-2">
         <input wire:model="data" type="date" class="border px-4 py-2">

@@ -22,6 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'google_id',
+        'avatar',
+        'role',
     ];
 
     /**
@@ -36,7 +39,7 @@ class User extends Authenticatable
 
     public function equip()
     {
-        return $this->belongsTo(Equip::class );
+        return $this->belongsTo(Equip::class);
     }
 
     /**

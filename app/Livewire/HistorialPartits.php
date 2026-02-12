@@ -4,30 +4,32 @@ namespace App\Livewire;
 
 use App\Models\Partit;
 use Livewire\Component;
+use Livewire\Attributes\On;
+use Livewire\WithPagination;
 
 class HistorialPartits extends Component
 {
-    use \Livewire\WithPagination;
+    use WithPagination;
 
     public $equip = '';
     public $data = '';
     public $sortField = 'data';
     public $sortDirection = 'asc';
 
-    public function updatingEquip()
+    public int $refreshKey = 0;
+
+    #[On('echo:classificacio,.partit.resultat')]
+    #[On('classificacio-refresh')]
+    public function refreshFromBroadcast(): void
     {
-        $this->resetPage();
+        //logger('REFRESH DISPARADO');
+        $this->refreshKey++; // 💥 fuerza reconstrucción del DOM
     }
 
-    public function updatingData()
-    {
-        $this->resetPage();
-    }
+    public function updatingEquip() { $this->resetPage(); }
+    public function updatingData() { $this->resetPage(); }
 
-    public function filtrar()
-    {
-        $this->resetPage();
-    }
+    public function filtrar() { $this->resetPage(); }
 
     public function reiniciar()
     {
@@ -43,6 +45,7 @@ class HistorialPartits extends Component
             $this->sortField = $field;
             $this->sortDirection = 'asc';
         }
+
         $this->resetPage();
     }
 
@@ -52,44 +55,35 @@ class HistorialPartits extends Component
             ->when($this->equip, function ($query) {
                 $query->where(function ($q) {
                     $q->whereHas('equipLocal', fn($sub) => $sub->where('nom', 'like', "%{$this->equip}%"))
-                        ->orWhereHas('equipVisitant', fn($sub) => $sub->where('nom', 'like', "%{$this->equip}%"));
+                      ->orWhereHas('equipVisitant', fn($sub) => $sub->where('nom', 'like', "%{$this->equip}%"));
                 });
             })
-            ->when($this->data, function ($query) {
-                $query->whereDate('data', $this->data);
-            });
+            ->when($this->data, fn($query) => $query->whereDate('data', $this->data));
 
         $collection = $query->get();
 
-        // Custom sorting
+        // Ordenación personalizada
         if ($this->sortField === 'resultat') {
-            $callback = function ($partit) {
-                if (is_null($partit->gols_local) || is_null($partit->gols_visitant)) {
-                    return -1;
-                }
-                return abs($partit->gols_local - $partit->gols_visitant);
-            };
+            $callback = fn($p) => is_null($p->gols_local) || is_null($p->gols_visitant)
+                ? -1
+                : abs($p->gols_local - $p->gols_visitant);
         } elseif ($this->sortField === 'local') {
             $callback = 'equipLocal.nom';
         } elseif ($this->sortField === 'visitant') {
             $callback = 'equipVisitant.nom';
         } elseif ($this->sortField === 'estadi') {
-            $callback = function ($partit) {
-                return $partit->estadi->nom ?? '';
-            };
+            $callback = fn($p) => $p->estadi->nom ?? '';
         } elseif ($this->sortField === 'arbitre') {
             $callback = 'arbitre.name';
         } else {
-            $callback = $this->sortField; // data, jornada
+            $callback = $this->sortField;
         }
 
-        if ($this->sortDirection === 'asc') {
-            $sorted = $collection->sortBy($callback)->values();
-        } else {
-            $sorted = $collection->sortByDesc($callback)->values();
-        }
+        $sorted = $this->sortDirection === 'asc'
+            ? $collection->sortBy($callback)->values()
+            : $collection->sortByDesc($callback)->values();
 
-        // Manual Pagination
+        // Paginación manual
         $perPage = 50;
         $currentPage = \Illuminate\Pagination\Paginator::resolveCurrentPage();
         $currentItems = $sorted->slice(($currentPage - 1) * $perPage, $perPage)->all();

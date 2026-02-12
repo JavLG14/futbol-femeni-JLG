@@ -8,12 +8,15 @@ use App\Http\Controllers\JugadoraController;
 use App\Http\Controllers\PartitController;
 use App\Http\Controllers\IniciController;
 use App\Http\Middleware\RoleMiddleware;
-
+use App\Http\Controllers\AuthController;
 
 Route::get('/', [IniciController::class, 'index'])->name('inici.inici');
 Route::get('/historic', [PartitController::class, 'historic'])->name('partits.historic');
 
 Route::get('/historic', [PartitController::class, 'historic'])->name('partits.historic');
+
+Route::get('/auth/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('google.callback');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -24,14 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Equips & Estadis: Shared resource routes with RoleMiddleware handling specific access inside
-    // However, specifically:
-    // Admin: Full access
-    // Manager: Edit own team (handled by Policy/Controller check, but route access needs to be open to them)
-    // Arbitre: Read only (usually)
-
-    // Simplification based on requirements:
-    // Admin: Resource full
     Route::middleware([RoleMiddleware::class . ':administrador'])->group(function () {
         Route::resource('equips', EquipController::class)->except(['index', 'show', 'edit', 'update']);
         Route::resource('estadis', EstadiController::class)->except(['index', 'show']);
